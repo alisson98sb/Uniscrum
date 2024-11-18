@@ -2,7 +2,7 @@ import './style.css'
 import Trash from '../../assets/deletar.svg'
 import Api from '../../services/api'
 import { useEffect, useState, useRef } from 'react';
-function Home() {
+function CadastroUser() {
 
   
   const [users, setUsers] = useState([]);
@@ -59,19 +59,19 @@ function Home() {
 
       {users.map(user => (
         <div className="card" key={user.id} >
-        <div>
-          <p>Nome: <span>{user.nome}</span></p>
-          <p>Papel: <span>{user.papel}</span></p>
-          <p>Email: <span>{user.email}</span></p>
+          <div>
+            <p>Nome: <span>{user.nome}</span></p>
+            <p>Papel: <span>{user.papel}</span></p>
+            <p>Email: <span>{user.email}</span></p>
+          </div>
+          <button onClick={() => deleteUsers(user.id)}>
+            <img src={Trash} alt="" />
+          </button>
         </div>
-        <button onClick={() => deleteUsers(user.id)}>
-          <img src={Trash} alt="" />
-        </button>
-      </div>
       ))}
       
     </div>
   )
 }
 
-export default Home
+export default CadastroUser

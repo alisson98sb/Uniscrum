@@ -25,6 +25,30 @@ app.get('/usuarios', async (req, res) => {
     res.send(data);
 });
 
+// GET one Usuario by ID
+
+
+// GET one Usuario by ID
+app.get('/usuarios/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const data = await prisma.usuario.findUnique({
+            where: { id: id }
+        });
+
+        if (!data) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        res.json(data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao buscar usuário' });
+    }
+});
+
+
 // POST new Usuario
 app.post('/usuarios', async (req, res) => {
     const { nome, email, papel } = req.body;
@@ -63,6 +87,27 @@ app.get('/sprints', async (req, res) => {
     const data = await prisma.sprint.findMany();
     res.send(data);
 });
+
+// GET one Sprint by ID
+app.get('/sprints/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const data = await prisma.sprint.findUnique({
+            where: { id: id }
+        });
+
+        if (!data) {
+            return res.status(404).json({ message: 'Sprint não encontrada' });
+        }
+
+        res.json(data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao buscar Sprint' });
+    }
+});
+
 
 // POST a new Sprint
 app.post('/sprints', async (req, res) => {
@@ -105,6 +150,26 @@ app.get('/dailies', async (req, res) => {
     res.send(data);
 });
 
+// GET one dailies by ID
+app.get('/dailies/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const data = await prisma.daily.findUnique({
+            where: { id: id }
+        });
+
+        if (!data) {
+            return res.status(404).json({ message: 'dailies não encontrada' });
+        }
+
+        res.json(data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao buscar dailies' });
+    }
+});
+
 // POST a new Daily
 app.post('/dailies', async (req, res) => {
     const { dataHora, notas, sprintId } = req.body;
@@ -142,6 +207,27 @@ app.get('/participantes-sprint', async (req, res) => {
     res.send(data);
 });
 
+// GET one ParticipantesSprint by UserID
+app.get('/participantes-sprint/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const data = await prisma.participantesSprint.findMany({
+            where: { usuarioId : id }
+        });
+
+        if (!data) {
+            return res.status(404).json({ message: 'participantes-sprint não encontrada' });
+        }
+
+        res.json(data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao buscar participantes-sprint' });
+    }
+});
+
+
 // POST a new ParticipantesSprint
 app.post('/participantes-sprint', async (req, res) => {
     const { usuarioId, sprintId } = req.body;
@@ -170,6 +256,27 @@ app.get('/participantes-daily', async (req, res) => {
     const data = await prisma.participantesDaily.findMany();
     res.send(data);
 });
+
+// GET one ParticipantesDayly by UserID
+app.get('/participantes-daily/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const data = await prisma.participantesDaily.findMany({
+            where: { usuarioId : id }
+        });
+
+        if (!data) {
+            return res.status(404).json({ message: 'participantes-daily não encontrada' });
+        }
+
+        res.json(data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao buscar participantes-daily' });
+    }
+});
+
 
 // POST a new ParticipantesDaily
 app.post('/participantes-daily', async (req, res) => {
