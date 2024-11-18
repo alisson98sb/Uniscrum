@@ -1,15 +1,16 @@
 import './style.css'
-import Trash from '../../assets/deletar.svg'
+
 import Api from '../../services/api'
 import { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 function Home() {
 
   
   const [users, setUsers] = useState([]);
   
-  const inputName = useRef()
-  const inputPapel = useRef()
-  const inputEmail = useRef()
+  const navigate = useNavigate();
+  
+  const inputId = useRef()
 
 
   async function getUsers() {
@@ -18,55 +19,45 @@ function Home() {
     setUsers(usersFromApi.data);
   }
 
-  async function createUsers() {
-    await Api.post('/usuarios', {
-      nome: inputName.current.value,
-      email: inputEmail.current.value,
-      papel: inputPapel.current.value
-    })
-   
+
+  async function getUserById() {
+    
+    try {
+      const response = await Api.get(`/usuarios/${inputId.current.value}`);
+      navigate(`/usuario/${response.data.id}`); // Redireciona para a rota desejada
+    } catch (error) {
+      console.error("Erro ao buscar o usuário:", error);
+    }
   }
 
-  async function deleteUsers(id) {
-    console.log("Entrou aquiiiiiiii")
-    await Api.delete(`/usuarios/${id}`)
+  async function redirectCadastrarUsuario() {
+      navigate(`/cadastroUser`); // Redireciona para a rota desejada
   }
 
   useEffect(() => {
     getUsers();
   }, []);
   
-  function logg() {
-    console.log(inputPapel.current.value)
-  }
+
   
   return (
     <div className="container">
-      <form action="" onChange={logg}>
-        <h1>Cadastro de usuários</h1>
-        <input type="text" name='nome' placeholder='nome' ref={inputName}/>
-        <input type="email"  name='email' placeholder='e-mail' ref={inputEmail}/>
-        
-        <select className="form-select bg-dark text-light" aria-label="Default select example" ref={inputPapel}>
-          <option>Selecione o tipo de usuário:</option>
-          <option value="admin">Admin</option>
-          <option value="gerente">Gerente</option>
-          <option value="usuario">Usuário</option>
-        </select>
-
-        <button type='button' onClick={createUsers}>Cadastrar</button>
+      <form action="">
+        <h1>Login</h1>
+        <input type="text"  name='id' placeholder='id' ref={inputId}/>
+       
+        <button type='button'  onClick={getUserById}>Iniciar</button>
+        <button type='button'  onClick={redirectCadastrarUsuario}>Cadastrar</button>
       </form>
-
+      <h1>Copie um dos id abaixo para logar, ou crie um novo usuario:</h1>
       {users.map(user => (
         <div className="card" key={user.id} >
           <div>
             <p>Nome: <span>{user.nome}</span></p>
             <p>Papel: <span>{user.papel}</span></p>
             <p>Email: <span>{user.email}</span></p>
+            <p>id: <span>{user.id}</span></p>
           </div>
-          <button onClick={() => deleteUsers(user.id)}>
-            <img src={Trash} alt="" />
-          </button>
         </div>
       ))}
       
