@@ -104,6 +104,7 @@ function UserDetails() {
                 sprint.dailies.map((daily) => (
                   <div className="sub-card" key={daily.id}>
                     <p>Notas: <span>{daily.notas}</span></p>
+                    <p>Avaliacao: <span>{daily.avaliacao}</span></p>
                     <p>Data e Hora: <span>{formatDate(daily.dataHora)}</span></p>
                   </div>
                 ))

@@ -36,6 +36,7 @@ model Daily {
   id         String  @id @default(auto()) @map("_id") @db.ObjectId
   dataHora   DateTime
   notas      String
+  avaliacao   String
   sprintId   String  @db.ObjectId
   sprint     Sprint  @relation(fields: [sprintId], references: [id])
   participantes ParticipantesDaily[]

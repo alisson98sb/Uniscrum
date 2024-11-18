@@ -172,9 +172,9 @@ app.get('/dailies/:id', async (req, res) => {
 
 // POST a new Daily
 app.post('/dailies', async (req, res) => {
-    const { dataHora, notas, sprintId } = req.body;
+    const { dataHora, notas, avaliacao, sprintId } = req.body;
     const data = await prisma.daily.create({
-        data: { dataHora: new Date(dataHora), notas, sprintId },
+        data: { dataHora: new Date(dataHora), notas, avaliacao, sprintId },
     });
     res.status(201).send(data);
 });
@@ -185,7 +185,7 @@ app.put('/dailies/:id', async (req, res) => {
     const { dataHora, notas, sprintId } = req.body;
     const data = await prisma.daily.update({
         where: { id },
-        data: { dataHora: new Date(dataHora), notas, sprintId },
+        data: { dataHora: new Date(dataHora), notas, avaliacao, sprintId },
     });
     res.send(data);
 });
