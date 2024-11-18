@@ -8,7 +8,7 @@ function Home() {
   const [users, setUsers] = useState([]);
   
   const inputName = useRef()
-  const inputAge = useRef()
+  const inputPapel = useRef()
   const inputEmail = useRef()
 
 
@@ -20,9 +20,9 @@ function Home() {
 
   async function createUsers() {
     await Api.post('/usuarios', {
-      name: inputName.current.value,
-      age: inputAge.current.value,
-      email: inputEmail.current.value
+      nome: inputName.current.value,
+      email: inputEmail.current.value,
+      papel: inputPapel.current.value
     })
    
   }
@@ -36,22 +36,32 @@ function Home() {
     getUsers();
   }, []);
   
+  function logg() {
+    console.log(inputPapel.current.value)
+  }
   
   return (
     <div className="container">
-      <form action="">
+      <form action="" onChange={logg}>
         <h1>Cadastro de usuários</h1>
         <input type="text" name='nome' placeholder='nome' ref={inputName}/>
-        <input type="number" name="idade" placeholder='idade' ref={inputAge}/>
         <input type="email"  name='email' placeholder='e-mail' ref={inputEmail}/>
+        
+        <select className="form-select bg-dark text-light" aria-label="Default select example" ref={inputPapel}>
+          <option>Selecione o tipo de usuário:</option>
+          <option value="admin">Admin</option>
+          <option value="gerente">Gerente</option>
+          <option value="usuario">Usuário</option>
+        </select>
+
         <button type='button' onClick={createUsers}>Cadastrar</button>
       </form>
 
       {users.map(user => (
         <div className="card" key={user.id} >
         <div>
-          <p>Nome: <span>{user.name}</span></p>
-          <p>Idade: <span>{user.age}</span></p>
+          <p>Nome: <span>{user.nome}</span></p>
+          <p>Papel: <span>{user.papel}</span></p>
           <p>Email: <span>{user.email}</span></p>
         </div>
         <button onClick={() => deleteUsers(user.id)}>
